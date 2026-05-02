@@ -170,3 +170,40 @@ for classe, proba in zip(model_loaded.classes_, probas):
     bar = '#' * int(proba * 30)
     print(f"  {classe:8s} : {proba:.1%} {bar}")
 
+# EXERCICE 1 : Importance des features
+importances = model.feature_importances_
+
+print("\nClassement des features par importance :\n")
+for name, imp in sorted(zip(feature_cols, importances),
+                         key=lambda x: x[1], reverse=True):
+    bar = "█" * int(imp * 50)
+    print(f"  {name:20s} : {imp:.3f}  {bar}")
+
+# Exercice 2 - tester avec 3 patients differents
+
+# patient 1 : jeune sans symptomes
+p1 = [20, le_sexe_loaded.transform(['M'])[0], 37.0, 120, 0, 0, 0, le_region_loaded.transform(['Dakar'])[0]]
+diag1 = model_loaded.predict([p1])[0]
+prob1 = model_loaded.predict_proba([p1])[0]
+print("\n--- Patient 1 : jeune 20 ans sans symptomes ---")
+print(f"Diagnostic : {diag1} ({prob1.max():.1%})")
+for c, p in zip(model_loaded.classes_, prob1):
+    print(f"  {c} : {p:.1%}")
+
+# patient 2 : adulte avec forte fievre
+p2 = [35, le_sexe_loaded.transform(['F'])[0], 40.2, 105, 1, 1, 1, le_region_loaded.transform(['Dakar'])[0]]
+diag2 = model_loaded.predict([p2])[0]
+prob2 = model_loaded.predict_proba([p2])[0]
+print("\n--- Patient 2 : adulte 35 ans forte fievre ---")
+print(f"Diagnostic : {diag2} ({prob2.max():.1%})")
+for c, p in zip(model_loaded.classes_, prob2):
+    print(f"  {c} : {p:.1%}")
+
+# patient 3 : personne agee avec toux
+p3 = [65, le_sexe_loaded.transform(['M'])[0], 38.5, 140, 1, 1, 0, le_region_loaded.transform(['Dakar'])[0]]
+diag3 = model_loaded.predict([p3])[0]
+prob3 = model_loaded.predict_proba([p3])[0]
+print("\n--- Patient 3 : age 65 ans avec toux ---")
+print(f"Diagnostic : {diag3} ({prob3.max():.1%})")
+for c, p in zip(model_loaded.classes_, prob3):
+    print(f"  {c} : {p:.1%}")
