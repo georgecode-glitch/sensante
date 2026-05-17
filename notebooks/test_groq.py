@@ -52,3 +52,16 @@ Explique ce resultat au patient."""}
 
 print("=== Explication SenSante ===")
 print(response2.choices[0].message.content)
+# EXERCICE 2 - Test temperatures
+for temp in [0.0, 0.5, 1.0]:
+    response = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[
+            {"role": "system", "content": "Tu es un assistant medical senegalais. Maximum 3 phrases."},
+            {"role": "user", "content": "Patient : Femme, 28 ans, Dakar. Diagnostic : paludisme 72%. Explique."}
+        ],
+        max_tokens=200,
+        temperature=temp
+    )
+    print(f"\n=== Temperature {temp} ===")
+    print(response.choices[0].message.content)
